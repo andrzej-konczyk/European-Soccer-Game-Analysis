@@ -63,17 +63,24 @@ from v_which_better_stage
 where which_average_is_better like 'away%'
 order by season
 
-/*initial observation - if away avg goal ratio is better, mainly it is in second part of season*/
 
-select season,stage
-from v_which_better_stage
-where which_average_is_better like 'away%' and  stage < 19
-order by season
 
-select season,stage
+/*data checking: in which half of season average number of goals by home/away team is better?*/
+select season, part_of_season, count(part_of_season)
+from
+(select season,stage,
+case when (which_average_is_better like 'away%' and  stage < 19) then 'first_half_of_season_away_win'
+when (which_average_is_better like 'away%' and  stage >= 19) then 'second_half_of_season_away_win'
+when (which_average_is_better like 'home%' and  stage < 19) then 'first_half_of_season_home_win'
+when (which_average_is_better like 'home%' and  stage >= 19) then 'second_half_of_season_home_win'
+when (which_average_is_better like 'the%' and  stage < 19) then 'first_half_of_season_no_better_team'
+when (which_average_is_better like 'the%' and  stage >= 19) then 'second_half_of_season_no_better_team'
+end as part_of_season
 from v_which_better_stage
-where which_average_is_better like 'away%' and  stage > 19
-order by season
+group by season, stage
+order by season)ps
+group by season, part_of_season
+
 
 /*deeper analysis - 14 away better ration in 1 st part of season vs 2nd part (18) - no big difference */
 
