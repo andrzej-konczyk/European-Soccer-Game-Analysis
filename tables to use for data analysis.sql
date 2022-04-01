@@ -98,8 +98,15 @@ order by season
 
 /* 8 of 14 away better ratio is from first quoter of seson*/
 
-select season, stage, abs((home_team_goal - away_team_goal)) as goal_diff  from v_ordered_hp
+create view v_diff_goals as
+select season, stage, home_team_goal , away_team_goal ,abs((home_team_goal - away_team_goal)) as goal_diff  from v_ordered_hp
 where name = 'England'
+
+select season, round(avg(goal_diff),2) as avg_diff_goals
+from v_diff_goals 
+group by season
+
+
 
 select * from away_players 
 order by season, name, stage asc
