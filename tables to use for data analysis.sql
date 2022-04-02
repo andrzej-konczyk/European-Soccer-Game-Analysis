@@ -102,10 +102,19 @@ create view v_diff_goals as
 select season, stage, home_team_goal , away_team_goal ,abs((home_team_goal - away_team_goal)) as goal_diff  from v_ordered_hp
 where name = 'England'
 
+
+/*data for goals diff as average*/
 select season, round(avg(goal_diff),2) as avg_diff_goals
 from v_diff_goals 
 group by season
 
+
+
+
+
+
+select * from home_players 
+order by season, name, stage asc
 
 
 select * from away_players 
