@@ -1,0 +1,8 @@
+"result","prct_b365h","prct_b365d","prct_b365a","uncertainty","prediction"
+home win,68.87,17.15,9.25,4.72999999999999,home win
+home win,63.95,19.58,10.62,5.849999999999994,home win
+home win,61.88,20.24,11.93,5.949999999999989,home win
+home win,60.53,20.48,11.91,7.079999999999998,home win
+home win,58.37,21.49,13.56,6.579999999999998,home win
+home win,50.7,24.32,17.42,7.559999999999988,home win
+home win,46.14,25.27,18.98,9.61,home win

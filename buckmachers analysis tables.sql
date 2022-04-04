@@ -68,7 +68,69 @@ end as prediction
 from v_b365))
 group by season
 
+create table overall_b365_predict as
+select distinct
+result, prct_b365h, prct_b365d, prct_b365a, uncertainty, prediction
+from
+(select *,
+case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
+when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
+when prct_b365a > (prct_b365h + prct_b365d) then 'away away'
+else 'no prediction results'
+end as prediction
+from v_b365
+where result = prediction
+order by prct_b365h desc)
 
+/*always when b365 predicted result, it was home win*/
+
+select * from overall_b365_predict 
+
+/*analysis for bwin bookmaker */
+
+create view v_bwin as
+select season, home_team, away_team, result, prct_bwh, prct_bwd, prct_bwa, 100-(prct_bwh + prct_bwd +prct_bwa) as uncertainty
+from bookm_prct
+
+create view v_bwin_match as
+select season, 
+sum(match) * 100 / count(match) as prct_match_bwin
+from
+(select *,
+case when result = prediction then 1
+else 0
+end as match
+from
+(select *,
+case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
+when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+else 'no prediction results'
+end as prediction
+from v_bwin))
+group by season
+
+create table overall_bwin_predict as
+select distinct
+result, prct_bwh, prct_bwd, prct_bwa, uncertainty, prediction
+from
+(select *,
+case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
+when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+else 'no prediction results'
+end as prediction
+from v_bwin
+where result = prediction
+order by prct_bwh desc)
+
+/*always when b365 predicted result, it was home win*/
+
+select * from overall_bwin_predict 
+
+
+
+-----
 select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
 when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
@@ -77,13 +139,15 @@ else 'no prediction results'
 end as prediction
 from v_b365
 where result = prediction
-order by season
 
-/*always when b365 predicted result, it was home win*/
-
-
-
-
+select *,
+case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
+when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+else 'no prediction results'
+end as prediction
+from v_bwin
+where result = prediction
 
 
 
