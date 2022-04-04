@@ -1,0 +1,81 @@
+"season","away_team","away_points","RANK () over (partition by season order by away_points desc)"
+"2012/2013",Manchester United,41,1
+"2012/2013",Arsenal,35,2
+"2012/2013",Tottenham Hotspur,34,3
+"2012/2013",Chelsea,34,3
+"2012/2013",Manchester City,33,5
+"2012/2013",Liverpool,28,6
+"2012/2013",Aston Villa,21,7
+"2012/2013",Everton,21,7
+"2012/2013",Swansea City,20,9
+"2012/2013",Fulham,19,10
+"2012/2013",West Bromwich Albion,18,11
+"2012/2013",Wigan Athletic,18,11
+"2012/2013",Southampton,16,13
+"2012/2013",Sunderland,16,13
+"2012/2013",Stoke City,14,15
+"2012/2013",Newcastle United,13,16
+"2012/2013",West Ham United,13,16
+"2012/2013",Norwich City,13,16
+"2012/2013",Queens Park Rangers,11,19
+"2012/2013",Reading,8,20
+"2013/2014",Liverpool,35,1
+"2013/2014",Arsenal,35,1
+"2013/2014",Chelsea,34,3
+"2013/2014",Manchester United,34,3
+"2013/2014",Manchester City,34,3
+"2013/2014",Tottenham Hotspur,33,6
+"2013/2014",Everton,30,7
+"2013/2014",Southampton,26,8
+"2013/2014",Newcastle United,22,9
+"2013/2014",Sunderland,20,10
+"2013/2014",Crystal Palace,18,11
+"2013/2014",Aston Villa,17,12
+"2013/2014",Swansea City,16,13
+"2013/2014",West Ham United,16,13
+"2013/2014",West Bromwich Albion,15,15
+"2013/2014",Stoke City,14,16
+"2013/2014",Fulham,14,16
+"2013/2014",Hull City,12,18
+"2013/2014",Cardiff City,10,19
+"2013/2014",Norwich City,9,20
+"2014/2015",Chelsea,38,1
+"2014/2015",Arsenal,34,2
+"2014/2015",Tottenham Hotspur,31,3
+"2014/2015",Manchester City,31,3
+"2014/2015",Liverpool,27,5
+"2014/2015",Crystal Palace,27,5
+"2014/2015",Manchester United,26,7
+"2014/2015",Southampton,23,8
+"2014/2015",Stoke City,20,9
+"2014/2015",West Bromwich Albion,19,10
+"2014/2015",Everton,19,10
+"2014/2015",Swansea City,18,12
+"2014/2015",Sunderland,18,12
+"2014/2015",Aston Villa,17,14
+"2014/2015",West Ham United,16,15
+"2014/2015",Leicester City,15,16
+"2014/2015",Hull City,15,16
+"2014/2015",Burnley,14,18
+"2014/2015",Newcastle United,12,19
+"2014/2015",Queens Park Rangers,7,20
+"2015/2016",Leicester City,39,1
+"2015/2016",Tottenham Hotspur,34,2
+"2015/2016",Arsenal,31,3
+"2015/2016",Liverpool,28,4
+"2015/2016",Manchester City,28,4
+"2015/2016",West Ham United,27,6
+"2015/2016",Southampton,27,6
+"2015/2016",Chelsea,26,8
+"2015/2016",Manchester United,25,9
+"2015/2016",Everton,24,10
+"2015/2016",Stoke City,23,11
+"2015/2016",Bournemouth,22,12
+"2015/2016",Crystal Palace,21,13
+"2015/2016",Watford,21,13
+"2015/2016",West Bromwich Albion,20,15
+"2015/2016",Swansea City,17,16
+"2015/2016",Sunderland,15,17
+"2015/2016",Norwich City,11,18
+"2015/2016",Newcastle United,9,19
+"2015/2016",Aston Villa,6,20

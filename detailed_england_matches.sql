@@ -54,6 +54,19 @@ order by season, home_points desc
 select *, RANK () over (partition by season order by home_points desc)
 from v_table_home
 
+create view v_table_away as
+select distinct season, away_team, away_points
+from v_hom_awa_point 
+order by season, home_points desc
+
+
+/*rank by home points*/
+select *, RANK () over (partition by season order by away_points desc)
+from v_table_away
+
+
+
+
 
 
 
