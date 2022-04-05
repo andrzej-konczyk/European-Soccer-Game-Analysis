@@ -172,6 +172,51 @@ order by prct_iwh desc)
 
 select * from overall_interwetten_predicted
 
+
+/* lasbet analysis */
+
+/*lbd = ibd and lba = iba */
+
+create view v_lasbet_ as
+select season, home_team, away_team, result, prct_lbh, prct_ibd, prct_iba, 100-(prct_lbh + prct_ibd +prct_iba) as uncertainty
+from bookm_prctg
+
+
+create view v_lasbet_match_ as
+select season, 
+sum(match) * 100 / count(match) as prct_match_b365
+from
+(select *,
+case when result = prediction then 1
+else 0
+end as match
+from
+(select *,
+case when prct_lbh > (prct_ibd + prct_iba) then 'home win'
+when prct_ibd > (prct_lbh + prct_iba) then 'draw'
+when prct_iba > (prct_lbh + prct_ibd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_lasbet_ ))
+group by season
+
+
+create table overall_lasbet_predicted as
+select distinct
+result, prct_lbh, prct_ibd, prct_iba, uncertainty, prediction
+from
+(select *,
+case when prct_lbh > (prct_ibd + prct_iba) then 'home win'
+when prct_ibd > (prct_lbh + prct_iba) then 'draw'
+when prct_iba > (prct_lbh + prct_ibd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_lasbet_ 
+where result = prediction
+order by prct_lbh desc)
+
+
+
 -----
 select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
@@ -198,6 +243,15 @@ when prct_iwa > (prct_iwh + prct_iwd) then 'away win'
 else 'no prediction results'
 end as prediction
 from v_interwetten
+where result = prediction
+
+select *,
+case when prct_lbh > (prct_ibd + prct_iba) then 'home win'
+when prct_ibd > (prct_lbh + prct_iba) then 'draw'
+when prct_iba > (prct_lbh + prct_ibd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_lasbet_ 
 where result = prediction
 
 
