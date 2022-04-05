@@ -24,11 +24,11 @@ on vs.home_team = v_buck_en.team_long_name
 group by home_team, away_team
 order by vs.season, vs.stage
 
-create table bookm_prct as
+create table bookm_prctg as
 select season, home_team, away_team, result, round(100/avg_b365h,2) as prct_b365h, round(100/avg_b365d, 2) as prct_b365d, round(100/avg_b365a , 2)as prct_b365a , 
 round(100/avg_bwh, 2) as prct_bwh , round(100/avg_bwd, 2) as prct_bwd, round(100/avg_bwa, 2) as prct_bwa,
 round(100/avg_iwh, 2) as prct_iwh, round(100/avg_iwd, 2) as prct_iwd, round(100/avg_iwa, 2) as prct_iwa, 
-round(100/avg_lbh, 2) as prct_ibh, round(100/avg_lbd, 2) as prct_ibd, round(100/avg_lba, 2) as prct_iba, 
+round(100/avg_lbh, 2) as prct_lbh, round(100/avg_lbd, 2) as prct_ibd, round(100/avg_lba, 2) as prct_iba, 
 round(100/avg_psh, 2) as prct_psh, round(100/avg_psd, 2) as prct_psd, round(100/avg_psa, 2) as prct_psa, 
 round(100/avg_whh, 2) as prct_wwh, round(100/avg_whd, 2) as prct_whd, round(100/avg_wha, 2) as prct_wha, 
 round(100/avg_sjh, 2) as prct_sjh, round(100/avg_sjd, 2) as prct_sjd, round(100/avg_sja, 2) as prct_sja, 
@@ -40,9 +40,9 @@ from result_bookm
 -------
 /*analysis for b365 bookmaker */
 
-create view v_b365 as
+create view v_b365_ as
 select season, home_team, away_team, result, prct_b365h, prct_b365d, prct_b365a, 100-(prct_b365h + prct_b365d +prct_b365a) as uncertainty
-from bookm_prct
+from bookm_prctg
 
 /* assumption: if h,d or a is > sum of two others then that prct is valid in other case rest of results is taken to consideration. The best is to use data with low
  * uncertainty.
@@ -50,7 +50,7 @@ from bookm_prct
  * example: 61.88 >  20.24 + 11.93 and uncertainty = 5.95% then predicted is that home team will win with uncertainty 5.95%. In that case we should compare
  * if result was home win. If so - then we have match */
 
-create view v_b365_match as
+create view v_b365_matched as
 select season, 
 sum(match) * 100 / count(match) as prct_match_b365
 from
@@ -62,37 +62,37 @@ from
 (select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
 when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
-when prct_b365a > (prct_b365h + prct_b365d) then 'away away'
+when prct_b365a > (prct_b365h + prct_b365d) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_b365))
+from v_b365_))
 group by season
 
-create table overall_b365_predict as
+create table overall_b365_predicted as
 select distinct
 result, prct_b365h, prct_b365d, prct_b365a, uncertainty, prediction
 from
 (select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
 when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
-when prct_b365a > (prct_b365h + prct_b365d) then 'away away'
+when prct_b365a > (prct_b365h + prct_b365d) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_b365
+from v_b365_
 where result = prediction
 order by prct_b365h desc)
 
 /*always when b365 predicted result, it was home win*/
 
-select * from overall_b365_predict 
+select * from overall_b365_predicted 
 
 /*analysis for bwin bookmaker */
 
-create view v_bwin as
+create view v_bwin_ as
 select season, home_team, away_team, result, prct_bwh, prct_bwd, prct_bwa, 100-(prct_bwh + prct_bwd +prct_bwa) as uncertainty
-from bookm_prct
+from bookm_prctg
 
-create view v_bwin_match as
+create view v_bwin_matched as
 select season, 
 sum(match) * 100 / count(match) as prct_match_bwin
 from
@@ -104,50 +104,102 @@ from
 (select *,
 case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
 when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
-when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_bwin))
+from v_bwin_))
 group by season
 
-create table overall_bwin_predict as
+create table overall_bwin_predicted as
 select distinct
 result, prct_bwh, prct_bwd, prct_bwa, uncertainty, prediction
 from
 (select *,
 case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
 when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
-when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_bwin
+from v_bwin_
 where result = prediction
 order by prct_bwh desc)
 
-/*always when b365 predicted result, it was home win*/
+/*always when bwin predicted result, it was home win*/
 
-select * from overall_bwin_predict 
+select * from overall_bwin_predicted
+
+/* analysis for interwetten */
+
+create view v_interwetten as
+select season, home_team, away_team, result, prct_iwh, prct_iwd, prct_iwa, 100-(prct_iwh + prct_iwd +prct_iwa) as uncertainty
+from bookm_prctg
+
+create view v_interwetten_match_ as
+select season, 
+sum(match) * 100 / count(match) as prct_match_b365
+from
+(select *,
+case when result = prediction then 1
+else 0
+end as match
+from
+(select *,
+case when prct_iwh > (prct_iwd + prct_iwa) then 'home win'
+when prct_iwd > (prct_iwh + prct_iwa) then 'draw'
+when prct_iwa > (prct_iwh + prct_iwd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_interwetten))
+group by season
+
+create table overall_interwetten_predicted as
+select distinct
+result, prct_iwh, prct_iwd, prct_iwa, uncertainty, prediction
+from
+(select *,
+case when prct_iwh > (prct_iwd + prct_iwa) then 'home win'
+when prct_iwd > (prct_iwh + prct_iwa) then 'draw'
+when prct_iwa > (prct_iwh + prct_iwd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_interwetten
+where result = prediction
+order by prct_iwh desc)
 
 
+/*here is observed revaluation - it will not be considered later on */
+
+
+select * from overall_interwetten_predicted
 
 -----
 select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
 when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
-when prct_b365a > (prct_b365h + prct_b365d) then 'away away'
+when prct_b365a > (prct_b365h + prct_b365d) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_b365
+from v_b365_
 where result = prediction
 
 select *,
 case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
 when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
-when prct_bwa > (prct_bwh + prct_bwd) then 'away away'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away win'
 else 'no prediction results'
 end as prediction
-from v_bwin
+from v_bwin_
 where result = prediction
+
+select *,
+case when prct_iwh > (prct_iwd + prct_iwa) then 'home win'
+when prct_iwd > (prct_iwh + prct_iwa) then 'draw'
+when prct_iwa > (prct_iwh + prct_iwd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_interwetten
+where result = prediction
+
 
 
 
