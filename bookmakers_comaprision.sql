@@ -123,8 +123,62 @@ having prct_sjh > prct_sja
 
 select * from overall_vcbet_predicted
 
+select avg(uncertainty) from overall_vcbet_predicted
+
+select stdev(prct_vch) from overall_vcbet_predicted
+
+select avg(prct_vch) from overall_vcbet_predicted
+
+/*7 different percentiges
+ * avg uncertainty base on different prct is 6.92 %
+ * only home wins is predicted properly
+ * range prct predicted for home win is between 46.34 % to 68.35%*
+ * standard deviation of home percentige for different results is 7.55%
+ * average home prediction for home winner is 58.38 %*/
+
 
 select * from overall_gamebookers_predicted
 
+select avg(uncertainty) from overall_gamebookers_predicted
+
+select stdev(prct_gbh) from overall_gamebookers_predicted
+
+select avg(prct_gbh) from overall_gamebookers_predicted
+
+/*7 different percentiges
+ * avg uncertainty base on different prct is 1.93 %
+ * only home wins is predicted properly
+ * range prct predicted for home win is between 50.48 % to 69.98 %*
+ * standard deviation of home percentige for different results is 7.31%
+ * average home prediction for home winner is 61.53 %*/
+
 
 select * from overall_bluesquare_predicted
+
+select avg(uncertainty) from overall_bluesquare_predicted
+
+select stdev(prct_bsh) from overall_bluesquare_predicted
+
+select avg(prct_bsh) from overall_bluesquare_predicted
+
+/*7 different percentiges
+ * avg uncertainty base on different prct is 1.54 %
+ * only home wins is predicted properly
+ * range prct predicted for home win is between 51.76 % to 70.14 %*
+ * standard deviation of home percentige for different results is 7.10%
+ * average home prediction for home winner is 61.70 %*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
