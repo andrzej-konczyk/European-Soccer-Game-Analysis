@@ -478,6 +478,7 @@ select * from overall_bluesquare_predicted
 
 
 -----
+create table b365_proper_predict as
 select *,
 case when prct_b365h > (prct_b365d + prct_b365a) then 'home win'
 when prct_b365d > (prct_b365h + prct_b365a) then 'draw'
@@ -487,6 +488,7 @@ end as prediction
 from v_b365_
 where result = prediction
 
+create table bwin_proper_predict as
 select *,
 case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
 when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
@@ -496,6 +498,7 @@ end as prediction
 from v_bwin_
 where result = prediction
 
+create table interwetten_proper_predict as
 select *,
 case when prct_iwh > (prct_iwd + prct_iwa) then 'home win'
 when prct_iwd > (prct_iwh + prct_iwa) then 'draw'
@@ -505,6 +508,8 @@ end as prediction
 from v_interwetten
 where result = prediction
 
+
+create table loadbrokers_proper_predict as
 select *,
 case when prct_lbh > (prct_ibd + prct_iba) then 'home win'
 when prct_ibd > (prct_lbh + prct_iba) then 'draw'
@@ -514,6 +519,8 @@ end as prediction
 from v_ladbrokers_ 
 where result = prediction
 
+
+create table pinnacle_proper_predict as
 select *,
 case when prct_psh > (prct_psd + prct_psa) then 'home win'
 when prct_psd > (prct_psh + prct_psa) then 'draw'
@@ -523,6 +530,7 @@ end as prediction
 from v_pinnacle_ 
 where result = prediction
 
+create table williamhill_proper_predict as
 select *,
 case when prct_wwh > (prct_whd + prct_wha) then 'home win'
 when prct_whd > (prct_wwh + prct_wha) then 'draw'
@@ -532,6 +540,7 @@ end as prediction
 from v_williamhill_ 
 where result = prediction
 
+create table stanjames_proper_predict as
 select *,
 case when prct_sjh > (prct_sjd + prct_sja) then 'home win'
 when prct_sjd > (prct_sjh + prct_sja) then 'draw'
@@ -541,7 +550,7 @@ end as prediction
 from v_stanjames_ 
 where result = prediction
 
-
+create table vcbet_proper_predict as
 select *,
 case when prct_vch > (prct_vcd + prct_vca) then 'home win'
 when prct_vcd > (prct_vch + prct_vca) then 'draw'
@@ -560,6 +569,8 @@ end as prediction
 from v_gamebookers_ 
 where result = prediction
 
+
+create table bluesquare_proper_predict as
 select *,
 case when prct_bsh > (prct_bsd + prct_bsa) then 'home win'
 when prct_bsd > (prct_bsh + prct_bsa) then 'draw'
