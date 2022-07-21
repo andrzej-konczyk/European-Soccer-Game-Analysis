@@ -85,6 +85,33 @@ select * from v_bwin_matched
 
 select avg(prct_match_bwin) from v_bwin_matched
 
+create table all_predict_bwin as
+select *,
+case when prct_bwh > (prct_bwd + prct_bwa) then 'home win'
+when prct_bwd > (prct_bwh + prct_bwa) then 'draw'
+when prct_bwa > (prct_bwh + prct_bwd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_bwin_
+
+create view v_1xx2_res_bwin_ as
+select result, prct_bwh, prct_bwd, prct_bwa, uncertainty, prediction,
+case when result = 'draw' then prct_bwh + prct_bwd
+end as '1X_or_X2'
+from all_predict_bwin
+where prediction not like 'no%' and result != 'away win'
+
+select *
+from v_1xx2_res_bwin_
+where "1X_or_X2" NOTNULL 
+order by "1X_or_X2" desc
+
+select prct_bwh, count(prct_bwh) as no_diff_prct, uncertainty
+from all_predict_bwin 
+where result = prediction
+group by prct_bwh
+order by count(prct_bwh) desc
+
 /*7 different percentiges // 126 results in 4 seasons predicted properly
  * avg uncertainty base on different prct is 3.10 - after consideration of all properly predicted results it is 3.08% 
  * only home wins is predicted properly
@@ -95,7 +122,10 @@ select avg(prct_match_bwin) from v_bwin_matched
  * season 2013/2014 - 18% results properly predicted
  * season 2014/2015 - 12% results properly predicted
  * season 2015/2016 - 14% results properly predicted
- * average properly predicted results is 16.50%*/
+ * average properly predicted results is 16.50%
+ * for properly predicted home wins, the best approach is to select that bet, where min prct for home win is 69.29% in other case better is to go with '1X'
+ * in case of not properly predicted home win (draw as a result), if we will take assumption that with min 74.14% certainty to 87.81% we can predict 1X result
+ * for '1X' the best is to select that bet, where certaintity is min 82 %*/
 
 
 select * from overall_interwetten_predicted
@@ -160,12 +190,29 @@ select stdev(prct_psh) from overall_pinnacle_predicted
 
 select avg(prct_psh) from overall_pinnacle_predicted
 
+select * from pinnacle_proper_predict 
+
+select avg(uncertainty) from pinnacle_proper_predict 
+
+select stdev(prct_psh) from pinnacle_proper_predict 
+
+select avg(prct_psh)from pinnacle_proper_predict 
+
+select * from v_pinnacle_match_ 
+
+select avg(prct_match_pinnacle) from v_pinnacle_match_ 
+
 /*7 different percentiges
  * avg uncertainty base on different prct is 7.74 %
  * only home wins is predicted properly
- * range prct predicted for home win is between 46.25 % to 68.71%*
+ * range prct predicted for home win is between 46.25 % to 68.71%*. Avg for proper prediction is 58.76%.
  * standard deviation of home percentige for different results is 7.68%
- * average home prediction for home winner is 58.40%*/
+ * average home prediction for home winner is 58.40% and after consideration of proper prediction is 58.76%
+ * season 2012/2013 - 22% results properly predicted
+ * season 2013/2014 - 18% results properly predicted
+ * season 2014/2015 - 12% results properly predicted
+ * season 2015/2016 - 14% results properly predicted
+ * average properly predicted results is 16.50 %*/
 
 
 select * from overall_willaimhill_predicted
@@ -176,12 +223,29 @@ select stdev(prct_wwh) from overall_willaimhill_predicted
 
 select avg(prct_wwh) from overall_willaimhill_predicted
 
+select * from williamhill_proper_predict wpp
+
+select avg(uncertainty) from williamhill_proper_predict wpp 
+
+select stdev(prct_wwh) from williamhill_proper_predict wpp 
+
+select avg(prct_wwh)from williamhill_proper_predict wpp 
+
+select * from v_williamhill_match_ vwm 
+
+select avg(prct_match_williamhill) from v_williamhill_match_ vwm 
+
 /*6 different percentiges
  * avg uncertainty base on different prct is 2.72 %
  * only home wins is predicted properly
- * range prct predicted for home win is between 50.31 % to 68.28%*
- * standard deviation of home percentige for different results is 6.02%
- * average home prediction for home winner is 60.30%*/
+ * range prct predicted for home win is between 50.31 % to 68.28%*. Avg for proper prediction is 60.43%.
+ * standard deviation of home percentige for different results is 6.02%. Standard deviation for proper home predicted is 5.55%
+ * average home prediction for home winner is 60.30% and for proper prediction is 60.43%*
+ * season 2012/2013 - 19% results properly predicted
+ * season 2013/2014 - 16% results properly predicted
+ * season 2014/2015 - 11% results properly predicted
+ * season 2015/2016 - 13% results properly predicted
+ * average properly predicted results is 14.75 %*/
 
 
 select * from overall_stanjames_predicted
@@ -199,12 +263,33 @@ select avg(prct_sjh) from overall_stanjames_predicted
 group by result
 having prct_sjh > prct_sja
 
+select * from stanjames_proper_predict spp
+group by result
+having prct_sjh > prct_sja
+
+select avg(uncertainty) from stanjames_proper_predict spp
+group by result
+having prct_sjh > prct_sja
+
+select stdev(prct_sjh) from stanjames_proper_predict spp
+
+select avg(prct_sjh)from stanjames_proper_predict spp
+
+select * from v_stanjames_match_ vsm 
+
+select avg(prct_match_stanjames) from v_stanjames_match_ vsm
+
 /*8 different percentiges
- * avg uncertainty base on different prct is 2.84, but there is one away predicted with overrating - without that result is 3.95 %
+ * avg uncertainty base on different prct is 2.84, but there is one away predicted with overrating - without that result is 3.95 %. For proper predicted it is 3.92%.
  * 7 home wins predicted and 1 away win (overrated)
- * range prct predicted for win is between 49.40 % to 71.26%*
+ * range prct predicted for win is between 49.40 % to 71.26%*. Avg for proper prediction is 58.90%.
  * standard deviation of home percentige for different results is 7.68% - here calculated without overrated result
- * average home prediction for home winner is 61.35% - here calculated without overrated result*/
+ * average home prediction for home winner is 61.35% - here calculated without overrated result*
+ * season 2012/2013 - 22% results properly predicted
+ * season 2013/2014 - 18% results properly predicted
+ * season 2014/2015 - 23% results properly predicted
+ * season 2015/2016 - 14% results properly predicted
+ * average properly predicted results is 19.25 %*/
 
 
 select * from overall_vcbet_predicted
@@ -215,12 +300,27 @@ select stdev(prct_vch) from overall_vcbet_predicted
 
 select avg(prct_vch) from overall_vcbet_predicted
 
+select avg(uncertainty) from vcbet_proper_predict vpp 
+
+select stdev(prct_vch) from vcbet_proper_predict vpp 
+
+select avg(prct_vch)from vcbet_proper_predict vpp 
+
+select * from v_vcbet_match_ vvm 
+
+select avg(prct_match_vcbet) from v_vcbet_match_ vvm  
+
 /*7 different percentiges
- * avg uncertainty base on different prct is 6.92 %
+ * avg uncertainty base on different prct is 6.92 %. It is 6.89% for proper predicted.
  * only home wins is predicted properly
- * range prct predicted for home win is between 46.34 % to 68.35%*
- * standard deviation of home percentige for different results is 7.55%
- * average home prediction for home winner is 58.38 %*/
+ * range prct predicted for home win is between 46.34 % to 68.35%*. Avg for proper prediction is 58.72%.
+ * standard deviation of home percentige for different results is 7.55%. For proper predicted it is 6.93%
+ * average home prediction for home winner is 58.38 %*
+ * season 2012/2013 - 22% results properly predicted
+ * season 2013/2014 - 18% results properly predicted
+ * season 2014/2015 - 12% results properly predicted
+ * season 2015/2016 - 14% results properly predicted
+ * average properly predicted results is 16.50 %*/
 
 
 select * from overall_gamebookers_predicted
@@ -231,12 +331,29 @@ select stdev(prct_gbh) from overall_gamebookers_predicted
 
 select avg(prct_gbh) from overall_gamebookers_predicted
 
+select avg(uncertainty) from gamebookers_proper_predict
+
+select stdev(prct_gbh) from gamebookers_proper_predict
+
+select avg(prct_gbh)from gamebookers_proper_predict
+
+select * from v_gamebookers_match_ 
+
+select avg(prct_match_gamebookers) from v_gamebookers_match_  
+
+
+
 /*7 different percentiges
- * avg uncertainty base on different prct is 1.93 %
+ * avg uncertainty base on different prct is 1.93 %. For proper predicted it is 1.79%.
  * only home wins is predicted properly
- * range prct predicted for home win is between 50.48 % to 69.98 %*
- * standard deviation of home percentige for different results is 7.31%
- * average home prediction for home winner is 61.53 %*/
+ * range prct predicted for home win is between 50.48 % to 69.98 %*. Avg for proper predicted it is 62.18%
+ * standard deviation of home percentige for different results is 7.31%. For proper predicted it is 6.90%.
+ * average home prediction for home winner is 61.53 %*
+ * season 2012/2013 - 22% results properly predicted
+ * season 2013/2014 - 18% results properly predicted
+ * season 2014/2015 - 12% results properly predicted
+ * season 2015/2016 - 14% results properly predicted
+ * average properly predicted results is 16.50 %*/
 
 
 select * from overall_bluesquare_predicted
@@ -247,12 +364,27 @@ select stdev(prct_bsh) from overall_bluesquare_predicted
 
 select avg(prct_bsh) from overall_bluesquare_predicted
 
+select avg(uncertainty) from bluesquare_proper_predict bpp 
+
+select stdev(prct_bsh) from bluesquare_proper_predict bpp 
+
+select avg(prct_bsh)from bluesquare_proper_predict bpp 
+
+select * from v_bluesquare_match_ vbm 
+
+select avg(prct_match_bluesquare) from v_bluesquare_match_ vbm
+
 /*7 different percentiges
- * avg uncertainty base on different prct is 1.54 %
+ * avg uncertainty base on different prct is 1.54 %. For proper prediction it is 1.45%.
  * only home wins is predicted properly
- * range prct predicted for home win is between 51.76 % to 70.14 %*
- * standard deviation of home percentige for different results is 7.10%
- * average home prediction for home winner is 61.70 %*/
+ * range prct predicted for home win is between 51.76 % to 70.14 %*. For proper prediction it is 62.34%.
+ * standard deviation of home percentige for different results is 7.10%. For proper prediction it is 6.72%.
+ * average home prediction for home winner is 61.70 %*
+ * season 2012/2013 - 22% results properly predicted
+ * season 2013/2014 - 18% results properly predicted
+ * season 2014/2015 - 12% results properly predicted
+ * season 2015/2016 - 14% results properly predicted
+ * average properly predicted results is 16.50 %*/
 
 
 

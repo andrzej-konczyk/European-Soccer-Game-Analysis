@@ -580,6 +580,15 @@ end as prediction
 from v_bluesquare_ 
 where result = prediction
 
+create table gamebookers_proper_predict as
+select *,
+case when prct_gbh > (prct_gbd + prct_gba) then 'home win'
+when prct_gbd > (prct_gbh + prct_gba) then 'draw'
+when prct_gba > (prct_gbh + prct_gbd) then 'away win'
+else 'no prediction results'
+end as prediction
+from v_gamebookers_ vg 
+where result = prediction
 
 
 
