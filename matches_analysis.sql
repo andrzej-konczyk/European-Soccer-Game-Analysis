@@ -43,9 +43,11 @@ from match_details md
 -- in general data related to bets in my country there is no possibility to review all selected bookmakers - so for futher analysis for prediction will be considered only William Hill and Unibet
 -- for table creation considered now all leagues (but bookmakers selection was done on most popular English Premier League) - it was done like that to increase datase and have better model, but
 -- for proper analysis and upgrades there is option to prepare bookamkers analysis separetely for each league and then join to english dataset
+-- gamebookers and blu square removed due to too many NULLS
 
+create table match_analysis_4 as
 select league, season, stage, home_team, away_team,
-home_team_goal, away_team_goal, whh, whd, wha, sjh, sjd, sja, gbh, gbd, gba, bsh, bsd, bsa,
+home_team_goal, away_team_goal, whh, whd, wha, sjh, sjd, sja,
 buildupplayspeed_h, buildupplayspeed_a, buildupplayspeedclass_h, buildupplayspeedclass_a,
 buildupplaydribbling_h, buildupplaydribbling_a, buildupplaypassing_h, buildupplaypassing_a,
 buildupplaypassingclass_h, buildupplaypassingclass_a, buildupplaypositioningclass_h, buildupplaypositioningclass_a,
@@ -83,7 +85,21 @@ on md.home_team_api_id = tau.team_api_id)a
 join teams_all_upgr tau
 on a.away_team_api_id = tau.team_api_id)b
 join leagues l 
-on b.league_id = l.id;
+on b.league_id = l.id
+where whh is NOT NULL 
+and whd is NOT NULL 
+and wha is NOT NULL 
+and sjh is NOT NULL 
+and sjd is NOT NULL 
+and sja is NOT NULL ;
+
+
+
+select count(*)
+from match_analysis_4
+-- we have 3712 data for analysis
+
+
 --------
 select all_predict_b365.season, all_predict_b365.home_team , all_predict_b365.away_team , all_predict_b365.result, all_predict_b365.prediction as b365_prediction
 from all_predict_b365
