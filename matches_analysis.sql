@@ -36,6 +36,14 @@ from buck
 select *
 from match_details md
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- for table creation selected the best bookmakers base on bookmakers analysis - percentage of proper predicted + uncertantity
+-- important information: stan james is currently unibet / bluesquare is currently betfair
+-- in general data related to bets in my country there is no possibility to review all selected bookmakers - so for futher analysis for prediction will be considered only William Hill and Unibet
+-- for table creation considered now all leagues (but bookmakers selection was done on most popular English Premier League) - it was done like that to increase datase and have better model, but
+-- for proper analysis and upgrades there is option to prepare bookamkers analysis separetely for each league and then join to english dataset
+
 select league, season, stage, home_team, away_team,
 home_team_goal, away_team_goal, whh, whd, wha, sjh, sjd, sja, gbh, gbd, gba, bsh, bsd, bsa,
 buildupplayspeed_h, buildupplayspeed_a, buildupplayspeedclass_h, buildupplayspeedclass_a,
