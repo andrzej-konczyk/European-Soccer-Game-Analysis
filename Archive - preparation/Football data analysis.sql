@@ -41,6 +41,9 @@ WHERE
   and (PSH is not null)
   and (PSD is not null)
   and (PSA is not null)
+  
+ select *
+ from match_details md 
 
 create table players as  
 select * from Player p 
