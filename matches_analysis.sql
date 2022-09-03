@@ -7,8 +7,9 @@ from match_team_u mtu
 select *
 from players_all pa 
 
-select * 
-from players_details pd 
+select *
+from players_details pd
+
 
 select *
 from match_details md
@@ -80,9 +81,11 @@ on home.away_team_api_id = teams_all.team_api_id
 select *
 from prep_match_footballers_4 
 
-create table table_home_for_analysis_3 as
+create table table_home_for_analysis_4 as
 select * from
 (select home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -129,6 +132,8 @@ height as height_player_11,
 weight as weight_player_11
 from
 (select h9.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -172,6 +177,8 @@ weight as weight_player_10,
 home_player_11
 from
 (select h8.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -212,6 +219,8 @@ home_player_10,
 home_player_11
 from
 (select h7.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -249,6 +258,8 @@ home_player_10,
 home_player_11
 from
 (select h6.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -283,6 +294,8 @@ home_player_10,
 home_player_11
 from
 (select h5.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -314,6 +327,8 @@ home_player_10,
 home_player_11
 from
 (select h4.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -342,6 +357,8 @@ home_player_10,
 home_player_11
 from
 (select h3.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -367,6 +384,8 @@ home_player_10,
 home_player_11
 from
 (select h2.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -389,6 +408,8 @@ home_player_10,
 home_player_11
 from
 (select h1.date,home_team_api_id, away_team_api_id,match_api_id,
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_1,
 age_player_1,
 height_player_1,
@@ -407,7 +428,9 @@ home_player_9,
 home_player_10,
 home_player_11
 from
-(select prep_match_footballers_4.date, home_team_api_id, away_team_api_id, match_api_id,
+(select prep_match_footballers_4.date, home_team_api_id, away_team_api_id, match_api_id, 
+home_player_1, home_player_2, home_player_3, home_player_4, home_player_5,
+home_player_6, home_player_7, home_player_8, home_player_9, home_player_10, home_player_11,
 player_name as player_1,
 prep_match_footballers_4.date - birthday as age_player_1,
 height as height_player_1,
@@ -891,13 +914,14 @@ select count(*)
 from match_analysis_6
 -- we have 3712 data for analysis
 
+--match_analysis_7 to use in wrost case !!!!! home 3 away 2 !!!!
 
 
-create table match_analysis_7 as
+create table match_analysis_8 as
 select *
 from match_analysis_6 ma6
-join table_home_for_analysis_3 thfa3
-on ma6.match_api_id = thfa3.match_api_id
+join table_home_for_analysis_4 thfa4
+on ma6.match_api_id = thfa4.match_api_id
 join table_away_for_analysis_2 tafa2
 on ma6.match_api_id = tafa2.match_api_id
 
